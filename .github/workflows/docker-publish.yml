@@ -46,6 +46,17 @@ jobs:
             type=semver,pattern={{version}}
             type=sha
 
+      - name: Create Next.js build environment file
+        run: |
+          touch .env.production
+          echo "NEXT_PUBLIC_CITRINEOS_CORE_URL=https://ocpp.redevolta.com" >> .env.production
+          echo "NEXT_PUBLIC_API_URL=https://hasura.redevolta.com/v1/graphql" >> .env.production
+          echo "NEXT_PUBLIC_WS_URL=wss://hasura.redevolta.com/v1/graphql" >> .env.production
+          
+          # Fix: Set your actual desired login credentials here
+          echo "NEXT_PUBLIC_ADMIN_EMAIL=admin@redevolta.com" >> .env.production
+          echo "NEXT_PUBLIC_ADMIN_PASSWORD=3s4fwU59qt52" >> .env.production
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
