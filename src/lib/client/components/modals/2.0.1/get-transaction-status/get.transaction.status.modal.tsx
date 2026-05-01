@@ -5,7 +5,6 @@
 
 import {
   type ChargingStationDto,
-  OCPPVersion,
   type TransactionDto,
   TransactionProps,
 } from '@citrineos/base';
@@ -25,6 +24,7 @@ import { useDispatch } from 'react-redux';
 import z from 'zod';
 import { Form } from '@lib/client/components/form';
 import { FormButtonVariants } from '@lib/client/components/buttons/form.button';
+import { useTenantId } from '@lib/client/hooks/useTenantId';
 
 export interface GetTransactionStatusModalProps {
   station: any;
@@ -43,6 +43,8 @@ export const GetTransactionStatusModal = ({
 }: GetTransactionStatusModalProps) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+
+  const tenantId = useTenantId();
 
   const parsedStation: ChargingStationDto = useMemo(
     () => plainToInstance(ChargingStationClass, station),
@@ -63,7 +65,7 @@ export const GetTransactionStatusModal = ({
     meta: {
       gqlQuery: GET_TRANSACTION_LIST_FOR_STATION,
       gqlVariables: {
-        stationId: parsedStation.id,
+        stationPkId: parsedStation.pkId,
       },
     },
     pagination: { mode: 'off' },
@@ -84,10 +86,10 @@ export const GetTransactionStatusModal = ({
     }
 
     triggerMessageAndHandleResponse<MessageConfirmation[]>({
-      url: `/transactions/getTransactionStatus?identifier=${parsedStation.id}&tenantId=1`,
+      url: `/transactions/getTransactionStatus?identifier=${parsedStation.id}&tenantId=${tenantId}`,
       data,
       setLoading,
-      ocppVersion: OCPPVersion.OCPP2_0_1,
+      ocppVersion: parsedStation.protocol,
     }).then(() => {
       form.reset();
       dispatch(closeModal());

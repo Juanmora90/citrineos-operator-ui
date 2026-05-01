@@ -29,7 +29,6 @@ import {
 } from '@lib/queries/locations';
 import { AccessDeniedFallback } from '@lib/utils/AccessDeniedFallback';
 import { ActionType, ResourceType } from '@lib/utils/access.types';
-import config from '@lib/utils/config';
 import { getSerializedValues } from '@lib/utils/middleware';
 import { CanAccess, useTranslate, useUpdateMany } from '@refinedev/core';
 import { ChevronLeft, Upload as UploadIcon } from 'lucide-react';
@@ -46,7 +45,6 @@ import {
   formLabelWrapperStyle,
   formRequiredAsterisk,
   MultiSelectFormField,
-  SelectFormField,
 } from '@lib/client/components/form/field';
 import { Field, FieldLabel } from '@lib/client/components/ui/field';
 import { buttonIconSize } from '@lib/client/styles/icon';
@@ -69,9 +67,11 @@ import {
 } from '@lib/utils/country.config';
 import { OpeningHoursForm } from '@lib/client/components/opening-hours';
 import { isValid, parseISO } from 'date-fns';
+import { useTenantId } from '@lib/client/hooks/useTenantId';
 
 type LocationsUpsertProps = {
   params: { id?: string };
+  allowImageUpload?: boolean;
 };
 
 const LocationCreateSchema = LocationSchema.pick({
@@ -126,11 +126,16 @@ const facilities: LocationFacilityEnumType[] = Object.keys(
   LocationFacilityEnum,
 ) as LocationFacilityEnumType[];
 
-export const LocationsUpsert = ({ params }: LocationsUpsertProps) => {
+export const LocationsUpsert = ({
+  params,
+  allowImageUpload = false,
+}: LocationsUpsertProps) => {
   const locationId = params.id ?? undefined;
   const { replace, back } = useRouter();
   const { mutate } = useUpdateMany();
   const translate = useTranslate();
+
+  const tenantId = useTenantId();
 
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
@@ -290,7 +295,7 @@ export const LocationsUpsert = ({ params }: LocationsUpsertProps) => {
     const newItem: any = getSerializedValues({ ...values }, LocationClass);
 
     if (!locationId) {
-      newItem.tenantId = config.tenantId;
+      newItem.tenantId = tenantId;
       newItem.createdAt = now;
     }
 
@@ -366,15 +371,22 @@ export const LocationsUpsert = ({ params }: LocationsUpsertProps) => {
         // Upload image
         if (uploadedFile && finalLocationId) {
           const renamedFileName = `${S3_BUCKET_FOLDER_IMAGES_LOCATIONS}/${finalLocationId}`;
-          uploadFileViaPresignedUrl(uploadedFile, renamedFileName).catch(
-            (err: any) => {
+          uploadFileViaPresignedUrl(uploadedFile, renamedFileName)
+            .then((result) => {
+              if (!result.success) {
+                open?.({
+                  type: 'error',
+                  message: translate('imageUploadFailed'),
+                });
+              }
+            })
+            .catch((err: any) => {
               console.error(err);
               open?.({
                 type: 'error',
                 message: translate('imageUploadFailed'),
               });
-            },
-          );
+            });
         }
 
         replace(`/${MenuSection.LOCATIONS}/${finalLocationId}`);
@@ -633,39 +645,41 @@ export const LocationsUpsert = ({ params }: LocationsUpsertProps) => {
                     placeholder="Select Facilities"
                     searchPlaceholder="Search Facilities"
                   />
-                  <Field>
-                    <FieldLabel>
-                      <span className={formLabelStyle}>Image</span>
-                    </FieldLabel>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      id="uploadInput"
-                      style={{ display: 'none' }}
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0];
-                        if (!file) return;
+                  {allowImageUpload && (
+                    <Field>
+                      <FieldLabel>
+                        <span className={formLabelStyle}>Image</span>
+                      </FieldLabel>
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        id="uploadInput"
+                        style={{ display: 'none' }}
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (!file) return;
 
-                        setUploadedFile(file);
-                        setUploadedFileName(file.name);
-                      }}
-                    />
-                    <Button
-                      type="button"
-                      variant="secondary"
-                      onClick={() =>
-                        document.getElementById('uploadInput')?.click()
-                      }
-                    >
-                      <UploadIcon className={buttonIconSize} />
-                      Upload
-                    </Button>
-                    {uploadedFileName && (
-                      <span className="text-sm text-gray-700">
-                        {uploadedFileName}
-                      </span>
-                    )}
-                  </Field>
+                          setUploadedFile(file);
+                          setUploadedFileName(file.name);
+                        }}
+                      />
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        onClick={() =>
+                          document.getElementById('uploadInput')?.click()
+                        }
+                      >
+                        <UploadIcon className={buttonIconSize} />
+                        Upload
+                      </Button>
+                      {uploadedFileName && (
+                        <span className="text-sm text-gray-700">
+                          {uploadedFileName}
+                        </span>
+                      )}
+                    </Field>
+                  )}
                 </div>
                 <div>
                   <MapLocationPicker
