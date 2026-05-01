@@ -7,7 +7,6 @@ import {
   type ChargingStationDto,
   type InstalledCertificateDto,
   InstalledCertificateProps,
-  OCPPVersion,
 } from '@citrineos/base';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { ComboboxFormField } from '@lib/client/components/form/field';
@@ -26,6 +25,7 @@ import { toast } from 'sonner';
 import z from 'zod';
 import { Form } from '@lib/client/components/form';
 import { FormButtonVariants } from '@lib/client/components/buttons/form.button';
+import { useTenantId } from '@lib/client/hooks/useTenantId';
 
 export interface DeleteCertificateModalProps {
   station: any;
@@ -42,6 +42,8 @@ export const DeleteCertificateModal = ({
 }: DeleteCertificateModalProps) => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
+
+  const tenantId = useTenantId();
 
   const parsedStation: ChargingStationDto = useMemo(
     () => plainToInstance(ChargingStationClass, station),
@@ -108,10 +110,10 @@ export const DeleteCertificateModal = ({
     };
 
     triggerMessageAndHandleResponse<MessageConfirmation[]>({
-      url: `/certificates/deleteCertificate?identifier=${parsedStation.id}&tenantId=1`,
+      url: `/certificates/deleteCertificate?identifier=${parsedStation.id}&tenantId=${tenantId}`,
       data,
       setLoading,
-      ocppVersion: OCPPVersion.OCPP2_0_1,
+      ocppVersion: parsedStation.protocol,
     }).then(() => {
       form.reset({
         certificate: '',
