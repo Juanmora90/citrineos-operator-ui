@@ -25,6 +25,7 @@ import { isEmpty } from '@lib/utils/assertion';
 import { EMPTY_VALUE } from '@lib/utils/consts';
 import { badgeListStyle } from '@lib/client/styles/page';
 import { Badge } from '@lib/client/components/ui/badge';
+import { TimestampDisplay } from '@lib/client/components/timestamp-display';
 
 export const getChargingStationsColumns = (
   translate: any,
@@ -40,7 +41,7 @@ export const getChargingStationsColumns = (
         row,
       }: CellContext<ChargingStationDetailsDto, unknown>) => (
         <TableCellLink
-          path={`/${MenuSection.CHARGING_STATIONS}/${row.original.id}`}
+          path={`/${MenuSection.CHARGING_STATIONS}/${row.original.pkId}`}
           value={row.original.id}
         />
       ),
@@ -149,6 +150,30 @@ export const getChargingStationsColumns = (
       key: ChargingStationDetailsProps.firmwareVersion,
       header: translate('columns.firmwareVersion', 'Firmware Version'),
       visible: false,
+    },
+    {
+      key: ChargingStationDetailsProps.createdAt,
+      header: 'Created At',
+      visible: false,
+      sortable: true,
+      cellRender: ({ row }: CellContext<ChargingStationDetailsDto, unknown>) =>
+        row.original.createdAt ? (
+          <TimestampDisplay isoTimestamp={row.original.createdAt} />
+        ) : (
+          <span>{EMPTY_VALUE}</span>
+        ),
+    },
+    {
+      key: ChargingStationDetailsProps.updatedAt,
+      header: 'Updated At',
+      visible: false,
+      sortable: true,
+      cellRender: ({ row }: CellContext<ChargingStationDetailsDto, unknown>) =>
+        row.original.updatedAt ? (
+          <TimestampDisplay isoTimestamp={row.original.updatedAt} />
+        ) : (
+          <span>{EMPTY_VALUE}</span>
+        ),
     },
     {
       key: ACTIONS_COLUMN,

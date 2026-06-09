@@ -37,6 +37,7 @@ import z from 'zod';
 import { Controller } from 'react-hook-form';
 import { isEmpty } from '@lib/utils/assertion';
 import { FormButtonVariants } from '@lib/client/components/buttons/form.button';
+import { useTenantId } from '@lib/client/hooks/useTenantId';
 
 export interface OCPP2_0_1_RemoteStartProps {
   station: ChargingStationDto;
@@ -57,6 +58,8 @@ export const OCPP2_0_1_RemoteStart = ({
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
 
+  const tenantId = useTenantId();
+
   const form = useForm({
     resolver: zodResolver(RemoteStartSchema),
     defaultValues: {
@@ -72,7 +75,7 @@ export const OCPP2_0_1_RemoteStart = ({
     meta: {
       gqlQuery: CHARGING_STATION_SEQUENCES_GET_QUERY,
       gqlVariables: {
-        stationId: station.id,
+        stationPkId: station.pkId,
         type: ChargingStationSequenceTypeEnum.remoteStartId,
       },
     },
@@ -156,9 +159,10 @@ export const OCPP2_0_1_RemoteStart = ({
     };
 
     triggerMessageAndHandleResponse<MessageConfirmation[]>({
-      url: `/evdriver/requestStartTransaction?identifier=${station.id}&tenantId=1`,
+      url: `/evdriver/requestStartTransaction?identifier=${station.id}&tenantId=${tenantId}`,
       data,
       setLoading,
+      ocppVersion: station.protocol,
     }).then(() => {
       form.reset();
       dispatch(closeModal());
