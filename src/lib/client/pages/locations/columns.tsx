@@ -22,10 +22,10 @@ import { isEmpty } from '@lib/utils/assertion';
 import { Badge } from '@lib/client/components/ui/badge';
 import { TimestampDisplay } from '@lib/client/components/timestamp-display';
 
-export const locationsColumns: ColumnConfiguration[] = [
+export const getLocationsColumns = (translate: any): ColumnConfiguration[] => [
   {
     key: LocationProps.name,
-    header: 'Name',
+    header: translate('columns.name', 'Name'),
     visible: true,
     sortable: true,
     cellRender: ({ row }: CellContext<LocationDto, unknown>) => (
@@ -37,7 +37,7 @@ export const locationsColumns: ColumnConfiguration[] = [
   },
   {
     key: LocationProps.address,
-    header: 'Address',
+    header: translate('columns.address', 'Address'),
     visible: true,
     cellRender: ({ row }: CellContext<LocationDto, unknown>) => (
       <span>
@@ -49,7 +49,7 @@ export const locationsColumns: ColumnConfiguration[] = [
   },
   {
     key: 'latitude',
-    header: 'Latitude',
+    header: translate('columns.latitude', 'Latitude'),
     visible: false,
     cellRender: ({ row }: CellContext<LocationDto, unknown>) => (
       <span>
@@ -61,7 +61,7 @@ export const locationsColumns: ColumnConfiguration[] = [
   },
   {
     key: 'longitude',
-    header: 'Longitude',
+    header: translate('columns.longitude', 'Longitude'),
     visible: false,
     cellRender: ({ row }: CellContext<LocationDto, unknown>) => (
       <span>
@@ -73,18 +73,18 @@ export const locationsColumns: ColumnConfiguration[] = [
   },
   {
     key: LocationProps.timeZone,
-    header: 'Time Zone',
+    header: translate('columns.timeZone', 'Time Zone'),
     visible: false,
     sortable: true,
   },
   {
     key: LocationProps.parkingType,
-    header: 'Parking Type',
+    header: translate('columns.parkingType', 'Parking Type'),
     visible: false,
   },
   {
     key: LocationProps.facilities,
-    header: 'Facilities',
+    header: translate('columns.facilities', 'Facilities'),
     visible: false,
     cellRender: ({ row }: CellContext<LocationDto, unknown>) => (
       <div className={badgeListStyle}>
@@ -102,7 +102,7 @@ export const locationsColumns: ColumnConfiguration[] = [
   },
   {
     key: 'totalStations',
-    header: 'Total Stations',
+    header: translate('columns.totalStations', 'Total Stations'),
     visible: true,
     cellRender: ({ row }: CellContext<LocationDto, unknown>) => (
       <span>{row.original.chargingPool?.length ?? 0}</span>
@@ -144,7 +144,7 @@ export const locationsColumns: ColumnConfiguration[] = [
           row.toggleExpanded();
         }}
       >
-        <span className="text-sm">View Stations</span>
+        <span className="text-sm">{translate('columns.viewStations', 'View Stations')}</span>
         <ChevronDownIcon
           className={`transition-transform duration-200 ${
             row.getIsExpanded() ? 'rotate-180' : ''

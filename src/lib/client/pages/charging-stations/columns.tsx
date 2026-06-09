@@ -28,12 +28,13 @@ import { Badge } from '@lib/client/components/ui/badge';
 import { TimestampDisplay } from '@lib/client/components/timestamp-display';
 
 export const getChargingStationsColumns = (
+  translate: any,
   includeLocation = true,
 ): ColumnConfiguration[] => {
   return [
     {
       key: ChargingStationProps.id,
-      header: 'ID',
+      header: translate('columns.id', 'ID'),
       visible: true,
       sortable: true,
       cellRender: ({
@@ -49,7 +50,7 @@ export const getChargingStationsColumns = (
       ? [
           {
             key: ChargingStationDetailsProps.location,
-            header: 'Location',
+            header: translate('columns.location', 'Location'),
             visible: true,
             cellRender: ({
               row,
@@ -64,7 +65,7 @@ export const getChargingStationsColumns = (
       : []),
     {
       key: ChargingStationDetailsProps.statusNotifications,
-      header: 'Status',
+      header: translate('columns.status', 'Status'),
       visible: true,
       cellRender: ({
         row,
@@ -74,13 +75,13 @@ export const getChargingStationsColumns = (
             row.original.isOnline ? 'text-success' : 'text-destructive'
           }
         >
-          {row.original.isOnline ? 'Online' : 'Offline'}
+          {row.original.isOnline ? translate('status.online', 'Online') : translate('status.offline', 'Offline')}
         </span>
       ),
     },
     {
       key: ChargingStationDetailsProps.protocol,
-      header: 'Protocol',
+      header: translate('columns.protocol', 'Protocol'),
       visible: true,
       cellRender: ({
         row,
@@ -92,7 +93,7 @@ export const getChargingStationsColumns = (
     },
     {
       key: 'vendorModel',
-      header: 'Vendor / Model',
+      header: translate('columns.vendorModel', 'Vendor / Model'),
       visible: false,
       cellRender: ({
         row,
@@ -102,12 +103,12 @@ export const getChargingStationsColumns = (
     },
     {
       key: ChargingStationDetailsProps.floorLevel,
-      header: 'Floor Level',
+      header: translate('columns.floorLevel', 'Floor Level'),
       visible: false,
     },
     {
       key: ChargingStationDetailsProps.parkingRestrictions,
-      header: 'Parking Restrictions',
+      header: translate('columns.parkingRestrictions', 'Parking Restrictions'),
       visible: false,
       cellRender: ({
         row,
@@ -127,7 +128,7 @@ export const getChargingStationsColumns = (
     },
     {
       key: ChargingStationDetailsProps.capabilities,
-      header: 'Capabilities',
+      header: translate('columns.capabilities', 'Capabilities'),
       visible: false,
       cellRender: ({
         row,
@@ -147,7 +148,7 @@ export const getChargingStationsColumns = (
     },
     {
       key: ChargingStationDetailsProps.firmwareVersion,
-      header: 'Firmware Version',
+      header: translate('columns.firmwareVersion', 'Firmware Version'),
       visible: false,
     },
     {
@@ -176,7 +177,7 @@ export const getChargingStationsColumns = (
     },
     {
       key: ACTIONS_COLUMN,
-      header: 'Actions',
+      header: translate('columns.actions', 'Actions'),
       visible: true,
       cellRender: ({
         row,

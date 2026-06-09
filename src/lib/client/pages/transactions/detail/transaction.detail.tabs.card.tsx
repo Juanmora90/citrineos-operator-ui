@@ -36,15 +36,7 @@ import { MeterValueClass } from '@lib/cls/meter.value.dto';
 import { useState } from 'react';
 import { AuthorizationClass } from '@lib/cls/authorization.dto';
 import { useColumnPreferences } from '@lib/client/hooks/useColumnPreferences';
-import { authorizationsColumns } from '@lib/client/pages/authorizations/columns';
-import { useQueryState } from 'nuqs';
-import { DETAIL_TAB_STATE } from '@lib/utils/consts';
-
-enum TransactionDetailTabType {
-  authorizations = 'authorizations',
-  meterValues = 'meterValues',
-  events = 'events',
-}
+import { getAuthorizationsColumns } from '@lib/client/pages/authorizations/columns';
 
 export const TransactionDetailTabsCard = ({
   transaction,
@@ -80,7 +72,7 @@ export const TransactionDetailTabsCard = ({
   const authorization = transaction?.authorization;
 
   const { renderedVisibleColumns } = useColumnPreferences(
-    authorizationsColumns,
+    getAuthorizationsColumns(translate),
     ResourceType.AUTHORIZATIONS,
   );
 

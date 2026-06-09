@@ -158,7 +158,7 @@ export const PartnerEndpointsTable: React.FC<PartnerEndpointsTableProps> = ({
           disabled={!isValidPartnerId}
         >
           <Plus className={buttonIconSize} />
-          {translate('buttons.add')} Endpoint
+          {translate('buttons.add')} {translate('TenantPartners.endpoint', 'Endpoint')}
         </Button>
       </div>
 
@@ -167,13 +167,13 @@ export const PartnerEndpointsTable: React.FC<PartnerEndpointsTableProps> = ({
           <thead>
             <tr className="border-b bg-muted/50">
               <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
-                Identifier
+                {translate('columns.identifier', 'Identifier')}
               </th>
               <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
-                URL
+                {translate('columns.url', 'URL')}
               </th>
               <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
-                Actions
+                {translate('columns.actions', 'Actions')}
               </th>
             </tr>
           </thead>
@@ -184,7 +184,7 @@ export const PartnerEndpointsTable: React.FC<PartnerEndpointsTableProps> = ({
                   colSpan={3}
                   className="h-24 text-center text-muted-foreground"
                 >
-                  No endpoints found
+                  {translate('TenantPartners.noEndpointsFound', 'No endpoints found')}
                 </td>
               </tr>
             ) : (
@@ -232,32 +232,32 @@ export const PartnerEndpointsTable: React.FC<PartnerEndpointsTableProps> = ({
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              {translate(`actions.${editingKey ? 'edit' : 'create'}`)} Endpoint
+              {translate(`actions.${editingKey ? 'edit' : 'create'}`)} {translate('TenantPartners.endpoint', 'Endpoint')}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <label className="text-sm font-medium">Identifier</label>
+              <label className="text-sm font-medium">{translate('columns.identifier', 'Identifier')}</label>
               <Input
                 value={formData.identifier}
                 onChange={(e) =>
                   setFormData({ ...formData, identifier: e.target.value })
                 }
                 disabled={!!editingKey}
-                placeholder="Enter identifier"
+                placeholder={translate('placeholders.enterIdentifier', 'Enter identifier')}
               />
               {errors.identifier && (
                 <p className="text-sm text-destructive">{errors.identifier}</p>
               )}
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">URL</label>
+              <label className="text-sm font-medium">{translate('columns.url', 'URL')}</label>
               <Input
                 value={formData.url}
                 onChange={(e) =>
                   setFormData({ ...formData, url: e.target.value })
                 }
-                placeholder="Enter URL"
+                placeholder={translate('placeholders.enterUrl', 'Enter URL')}
               />
               {errors.url && (
                 <p className="text-sm text-destructive">{errors.url}</p>
@@ -282,11 +282,10 @@ export const PartnerEndpointsTable: React.FC<PartnerEndpointsTableProps> = ({
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {translate('actions.delete')} Endpoint
+              {translate('actions.delete')} {translate('TenantPartners.endpoint', 'Endpoint')}
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this endpoint? This action cannot
-              be undone.
+              {translate('dialogs.thisActionCannotBeUndone', 'This action cannot be undone.')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

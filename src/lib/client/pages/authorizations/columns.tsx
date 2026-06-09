@@ -16,10 +16,10 @@ import { EMPTY_VALUE } from '@lib/utils/consts';
 import { badgeListStyle } from '@lib/client/styles/page';
 import { TimestampDisplay } from '@lib/client/components/timestamp-display';
 
-export const authorizationsColumns: ColumnConfiguration[] = [
+export const getAuthorizationsColumns = (translate: any): ColumnConfiguration[] => [
   {
     key: AuthorizationProps.idToken,
-    header: 'Authorization ID',
+    header: translate('columns.authorizationId', 'Authorization ID'),
     visible: true,
     sortable: true,
     cellRender: ({ row }: CellContext<AuthorizationDto, unknown>) => (
@@ -31,7 +31,7 @@ export const authorizationsColumns: ColumnConfiguration[] = [
   },
   {
     key: AuthorizationProps.idTokenType,
-    header: 'Type',
+    header: translate('columns.type', 'Type'),
     visible: true,
     sortable: true,
     cellRender: ({ row }: CellContext<AuthorizationDto, unknown>) => (
@@ -40,7 +40,7 @@ export const authorizationsColumns: ColumnConfiguration[] = [
   },
   {
     key: AuthorizationProps.status,
-    header: 'Status',
+    header: translate('columns.status', 'Status'),
     visible: true,
     sortable: true,
     cellRender: ({ row }: CellContext<AuthorizationDto, unknown>) => (
@@ -49,20 +49,20 @@ export const authorizationsColumns: ColumnConfiguration[] = [
   },
   {
     key: AuthorizationProps.concurrentTransaction,
-    header: 'Concurrent Transactions',
+    header: translate('columns.concurrentTransactions', 'Concurrent Transactions'),
     visible: true,
     cellRender: ({ row }: CellContext<AuthorizationDto, unknown>) => {
       const concurrentTransaction = row.original.concurrentTransaction;
       return (
         <Badge variant={concurrentTransaction ? 'success' : 'destructive'}>
-          {concurrentTransaction ? 'Allowed' : 'Not Allowed'}
+          {concurrentTransaction ? translate('status.allowed', 'Allowed') : translate('status.notAllowed', 'Not Allowed')}
         </Badge>
       );
     },
   },
   {
     key: AuthorizationProps.allowedConnectorTypes,
-    header: 'Allowed Types',
+    header: translate('columns.allowedTypes', 'Allowed Types'),
     visible: false,
     cellRender: ({ row }: CellContext<AuthorizationDto, unknown>) =>
       !isEmpty(row.original.allowedConnectorTypes) ? (
@@ -79,7 +79,7 @@ export const authorizationsColumns: ColumnConfiguration[] = [
   },
   {
     key: AuthorizationProps.disallowedEvseIdPrefixes,
-    header: 'Disallowed Prefixes',
+    header: translate('columns.disallowedPrefixes', 'Disallowed Prefixes'),
     visible: false,
     cellRender: ({ row }: CellContext<AuthorizationDto, unknown>) =>
       !isEmpty(row.original.disallowedEvseIdPrefixes) ? (

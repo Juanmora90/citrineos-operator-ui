@@ -6,7 +6,7 @@
 import { Table } from '@lib/client/components/table';
 import {
   getTransactionsFilters,
-  transactionsColumns,
+  getTransactionsColumns,
 } from '@lib/client/pages/transactions/columns';
 import { TransactionClass } from '@lib/cls/transaction.dto';
 import { TRANSACTION_LIST_QUERY } from '@lib/queries/transactions';
@@ -30,7 +30,7 @@ export const TransactionsList = () => {
   const translate = useTranslate();
 
   const { renderedVisibleColumns, columnSelector } = useColumnPreferences(
-    transactionsColumns,
+    getTransactionsColumns(translate),
     ResourceType.TRANSACTIONS,
   );
 

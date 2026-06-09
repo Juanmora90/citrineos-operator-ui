@@ -8,6 +8,8 @@ import GenericTag from '@lib/client/components/tag';
 import { Separator } from '@lib/client/components/ui/separator';
 import React from 'react';
 
+import { useTranslate } from '@refinedev/core';
+
 interface SampledValueProps {
   sampledValue: SampledValue;
 }
@@ -15,6 +17,7 @@ interface SampledValueProps {
 export const SampledValueView: React.FC<SampledValueProps> = ({
   sampledValue,
 }) => {
+  const translate = useTranslate();
   const DescriptionRow = ({
     label,
     children,
@@ -30,7 +33,7 @@ export const SampledValueView: React.FC<SampledValueProps> = ({
 
   return (
     <div className="border rounded-lg overflow-hidden">
-      <DescriptionRow label="Value">
+      <DescriptionRow label={translate('columns.value', 'Value')}>
         {sampledValue.value !== null && sampledValue.value !== undefined ? (
           sampledValue.value
         ) : (
@@ -38,7 +41,7 @@ export const SampledValueView: React.FC<SampledValueProps> = ({
         )}
       </DescriptionRow>
 
-      <DescriptionRow label="Context">
+      <DescriptionRow label={translate('columns.context', 'Context')}>
         {sampledValue.context ? (
           <GenericTag
             enumValue={sampledValue.context as OCPP2_0_1.ReadingContextEnumType}
@@ -49,7 +52,7 @@ export const SampledValueView: React.FC<SampledValueProps> = ({
         )}
       </DescriptionRow>
 
-      <DescriptionRow label="Measurand">
+      <DescriptionRow label={translate('columns.measurand', 'Measurand')}>
         {sampledValue.measurand ? (
           <GenericTag
             enumValue={sampledValue.measurand as OCPP2_0_1.MeasurandEnumType}
@@ -60,7 +63,7 @@ export const SampledValueView: React.FC<SampledValueProps> = ({
         )}
       </DescriptionRow>
 
-      <DescriptionRow label="Phase">
+      <DescriptionRow label={translate('columns.phase', 'Phase')}>
         {sampledValue.phase ? (
           <GenericTag
             enumValue={sampledValue.phase as OCPP2_0_1.PhaseEnumType}
@@ -71,7 +74,7 @@ export const SampledValueView: React.FC<SampledValueProps> = ({
         )}
       </DescriptionRow>
 
-      <DescriptionRow label="Location">
+      <DescriptionRow label={translate('columns.location', 'Location')}>
         {sampledValue.location ? (
           <GenericTag
             enumValue={sampledValue.location as OCPP2_0_1.LocationEnumType}
@@ -92,6 +95,7 @@ interface SampledValuesListProps {
 export const SampledValuesListView: React.FC<SampledValuesListProps> = ({
   sampledValues,
 }) => {
+  const translate = useTranslate();
   return (
     <div className="space-y-6">
       {sampledValues.map((sampledValue, index) => (
@@ -99,7 +103,7 @@ export const SampledValuesListView: React.FC<SampledValuesListProps> = ({
           <div className="flex items-center gap-4 mb-4">
             <Separator className="flex-1" />
             <h4 className="text-sm font-medium text-muted-foreground">
-              Sampled Value {index + 1}
+              {translate('columns.sampledValue', 'Sampled Value')} {index + 1}
             </h4>
             <Separator className="flex-1" />
           </div>

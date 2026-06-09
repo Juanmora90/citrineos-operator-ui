@@ -17,17 +17,14 @@ import {
 } from '@lib/queries/transaction.events';
 import { ResourceType } from '@lib/utils/access.types';
 import { getPlainToInstanceOptions } from '@lib/utils/tables';
-import { useList } from '@refinedev/core';
+import { useList, useTranslate } from '@refinedev/core';
 import { ChevronDownIcon } from 'lucide-react';
 import React, { useMemo, useState } from 'react';
 import type { ExpandedState } from '@tanstack/react-table';
 import { useTenantId } from '@lib/client/hooks/useTenantId';
 
 export const TransactionEventsList = ({ transactionDatabaseId }: any) => {
-  const [expanded, setExpanded] = useState<ExpandedState>({});
-
-  const tenantId = useTenantId();
-
+  const translate = useTranslate();
   const {
     query: { data: eventsData },
   } = useList<TransactionEventDto>({
@@ -81,33 +78,39 @@ export const TransactionEventsList = ({ transactionDatabaseId }: any) => {
     return [...events, ...messageRows];
   }, [eventsData?.data, messagesData?.data, transactionDatabaseId]);
 
-  const columns = [
-    ...getTransactionEventColumns(),
-    <Table.Column
-      id="meterValues"
-      key="meterValues"
-      accessorKey={TransactionEventProps.meterValue}
-      header=""
-      cell={({ row }) =>
-        row.original.eventType! in TransactionEventEnum ? (
-          <div
-            className="flex items-center justify-end cursor-pointer hover:text-primary"
-            onClick={(e) => {
-              e.stopPropagation();
-              row.toggleExpanded();
-            }}
-          >
-            <span className="text-sm">View Meter Values</span>
-            <ChevronDownIcon
-              className={`transition-transform duration-200 ${
-                row.getIsExpanded() ? 'rotate-180' : ''
-              }`}
-            />
-          </div>
-        ) : null
-      }
-    />,
-  ];
+  const columns = useMemo(
+    () => [
+      ...getTransactionEventColumns(translate),
+      <Table.Column
+        id="meterValues"
+        key="meterValues"
+        accessorKey={TransactionEventProps.meterValue}
+        header={translate('columns.meterValues', 'Meter Values')}
+        cell={({ row }) =>
+          row.original.eventType! in TransactionEventEnum ? (
+            <div
+              className="flex items-center cursor-pointer hover:text-primary"
+              onClick={() =>
+                setExpandedRow((prev) =>
+                  prev === row.original.id ? undefined : row.original.id,
+                )
+              }
+            >
+              {translate('columns.viewMeterValues', 'View Meter Values')}
+              <ChevronDownIcon
+                className={
+                  expandedRow === row.original.id
+                    ? 'ml-2 transform rotate-180 transition-transform'
+                    : 'ml-2 transition-transform'
+                }
+              />
+            </div>
+          ) : null
+        }
+      />,
+    ],
+    [expandedRow, translate],
+  );
 
   return (
     <div className="space-y-4">

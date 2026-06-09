@@ -16,7 +16,7 @@ import { GET_METER_VALUES_FOR_STATION } from '@lib/queries/meter.values';
 import { GET_TRANSACTION_LIST_FOR_STATION } from '@lib/queries/transactions';
 import { ResourceType } from '@lib/utils/access.types';
 import { getPlainToInstanceOptions } from '@lib/utils/tables';
-import { useList } from '@refinedev/core';
+import { useList, useTranslate } from '@refinedev/core';
 import {
   endOfDay,
   isAfter,
@@ -58,6 +58,7 @@ const filterByDate = (
 export const AggregatedMeterValuesData: FC<{ stationId: string }> = ({
   stationId,
 }) => {
+  const translate = useTranslate();
   const {
     query: { data: txData, isLoading: txLoading },
   } = useList<TransactionDto>({
@@ -107,16 +108,16 @@ export const AggregatedMeterValuesData: FC<{ stationId: string }> = ({
     <div className={pageFlex}>
       <div className="grid grid-cols-3 gap-4 w-full">
         <div className="flex flex-col gap-2">
-          <label className="text-sm font-semibold">Time Range:</label>
+          <label className="text-sm font-semibold">{translate('columns.timeRange', 'Time Range')}:</label>
           <RangePicker dateRange={dateRange} setDateRange={setDateRange} />
         </div>
         <div className="col-span-2 flex flex-col gap-2">
-          <label className="text-sm font-semibold">Contexts:</label>
+          <label className="text-sm font-semibold">{translate('columns.contexts', 'Contexts')}:</label>
           <MultiSelect<OCPP2_0_1.ReadingContextEnumType>
             options={Object.values(OCPP2_0_1.ReadingContextEnumType)}
             selectedValues={validContexts}
             setSelectedValues={setValidContexts}
-            placeholder="Select reading contexts"
+            placeholder={translate('placeholders.selectReadingContexts', 'Select reading contexts')}
           />
         </div>
       </div>
