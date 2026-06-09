@@ -11,7 +11,7 @@ import {
   TabsList,
   TabsTrigger,
 } from '@lib/client/components/ui/tabs';
-import { CanAccess } from '@refinedev/core';
+import { useTranslate, CanAccess } from '@refinedev/core';
 import { ActionType, ResourceType } from '@lib/utils/access.types';
 import { AccessDeniedFallback } from '@lib/utils/AccessDeniedFallback';
 import { Table } from '@lib/client/components/table';
@@ -21,7 +21,7 @@ import { TransactionClass } from '@lib/cls/transaction.dto';
 import type { AuthorizationDto } from '@citrineos/base';
 import {
   transactionAuthorizationIdTokenField,
-  transactionsColumns,
+  getTransactionsColumns,
 } from '@lib/client/pages/transactions/columns';
 import { cardTabsStyle } from '@lib/client/styles/card';
 import { useColumnPreferences } from '@lib/client/hooks/useColumnPreferences';
@@ -31,10 +31,11 @@ export const AuthorizationDetailTabsCard = ({
 }: {
   authorization: AuthorizationDto;
 }) => {
+  const translate = useTranslate();
   const authIdToken = authorization?.idToken;
 
   const { renderedVisibleColumns } = useColumnPreferences(
-    transactionsColumns.filter(
+    getTransactionsColumns(translate).filter(
       (tc) => tc.key !== transactionAuthorizationIdTokenField,
     ),
     ResourceType.TRANSACTIONS,

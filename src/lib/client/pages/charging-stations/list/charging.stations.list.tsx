@@ -38,7 +38,7 @@ export const ChargingStationsList = () => {
   const [filters, setFilters] = useState<any>(EMPTY_FILTER);
 
   const { renderedVisibleColumns, columnSelector } = useColumnPreferences(
-    getChargingStationsColumns(),
+    getChargingStationsColumns(translate),
     ResourceType.CHARGING_STATIONS,
   );
 

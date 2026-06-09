@@ -10,10 +10,10 @@ import { TenantPartnerClass } from '@lib/cls/tenant.partner.cls';
 import { TableCellLink } from '@lib/client/components/table-cell-link';
 import type { CellContext } from '@tanstack/react-table';
 
-export const partnersColumns = [
+export const getPartnersColumns = (translate: any) => [
   {
     key: TenantPartnerProps.partnerProfileOCPI,
-    header: 'Name',
+    header: translate('columns.name', 'Name'),
     visible: true,
     cellRender: ({ row }: CellContext<TenantPartnerClass, unknown>) => (
       <TableCellLink
@@ -27,12 +27,12 @@ export const partnersColumns = [
   },
   {
     key: TenantPartnerProps.countryCode,
-    header: 'Country Code',
+    header: translate('columns.countryCode', 'Country Code'),
     visible: true,
   },
   {
     key: TenantPartnerProps.partyId,
-    header: 'Party ID',
+    header: translate('columns.partyId', 'Party ID'),
     visible: true,
   },
 ];

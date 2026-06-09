@@ -17,11 +17,12 @@ import {
 } from '@lib/queries/transaction.events';
 import { ResourceType } from '@lib/utils/access.types';
 import { getPlainToInstanceOptions } from '@lib/utils/tables';
-import { useList } from '@refinedev/core';
+import { useList, useTranslate } from '@refinedev/core';
 import { ChevronDownIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 export const TransactionEventsList = ({ transactionDatabaseId }: any) => {
+  const translate = useTranslate();
   const {
     query: { data: eventsData },
   } = useList<TransactionEventDto>({
@@ -79,12 +80,12 @@ export const TransactionEventsList = ({ transactionDatabaseId }: any) => {
 
   const columns = useMemo(
     () => [
-      ...getTransactionEventColumns(),
+      ...getTransactionEventColumns(translate),
       <Table.Column
         id="meterValues"
         key="meterValues"
         accessorKey={TransactionEventProps.meterValue}
-        header="Meter Values"
+        header={translate('columns.meterValues', 'Meter Values')}
         cell={({ row }) =>
           row.original.eventType! in TransactionEventEnum ? (
             <div
@@ -95,7 +96,7 @@ export const TransactionEventsList = ({ transactionDatabaseId }: any) => {
                 )
               }
             >
-              View Meter Values
+              {translate('columns.viewMeterValues', 'View Meter Values')}
               <ChevronDownIcon
                 className={
                   expandedRow === row.original.id
@@ -108,7 +109,7 @@ export const TransactionEventsList = ({ transactionDatabaseId }: any) => {
         }
       />,
     ],
-    [expandedRow],
+    [expandedRow, translate],
   );
 
   return (

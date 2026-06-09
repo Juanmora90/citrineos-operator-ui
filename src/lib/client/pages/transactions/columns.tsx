@@ -27,10 +27,10 @@ export const transactionChargingStationLocationNameField =
   'ChargingStation.Location.name';
 export const transactionAuthorizationIdTokenField = 'authorization.idToken';
 
-export const transactionsColumns: ColumnConfiguration[] = [
+export const getTransactionsColumns = (translate: any): ColumnConfiguration[] => [
   {
     key: TransactionProps.transactionId,
-    header: 'Transaction ID',
+    header: translate('columns.transactionId', 'Transaction ID'),
     visible: true,
     sortable: true,
     cellRender: ({ row }: CellContext<TransactionClass, unknown>) => (
@@ -42,7 +42,7 @@ export const transactionsColumns: ColumnConfiguration[] = [
   },
   {
     key: TransactionProps.isActive,
-    header: 'Active',
+    header: translate('columns.active', 'Active'),
     visible: true,
     cellRender: ({ row }: CellContext<TransactionClass, unknown>) =>
       row.original.isActive ? (
@@ -53,7 +53,7 @@ export const transactionsColumns: ColumnConfiguration[] = [
   },
   {
     key: transactionStationIdField,
-    header: 'Station ID',
+    header: translate('columns.stationId', 'Station ID'),
     visible: true,
     sortable: true,
     cellRender: ({ row }: CellContext<TransactionClass, unknown>) => (
@@ -65,7 +65,7 @@ export const transactionsColumns: ColumnConfiguration[] = [
   },
   {
     key: transactionChargingStationLocationNameField,
-    header: 'Location',
+    header: translate('columns.location', 'Location'),
     visible: true,
     sortable: true,
     cellRender: ({ row }: CellContext<BaseRecord, unknown>) => (
@@ -77,7 +77,7 @@ export const transactionsColumns: ColumnConfiguration[] = [
   },
   {
     key: transactionAuthorizationIdTokenField,
-    header: 'ID Token',
+    header: translate('columns.idToken', 'ID Token'),
     visible: true,
     cellRender: ({ row }: CellContext<BaseRecord, unknown>) => {
       const idToken = row.original.authorization?.idToken;
@@ -93,7 +93,7 @@ export const transactionsColumns: ColumnConfiguration[] = [
   },
   {
     key: TransactionProps.totalKwh,
-    header: 'Total kWh',
+    header: translate('columns.totalKwh', 'Total kWh'),
     visible: true,
     sortable: true,
     cellRender: ({ row }: CellContext<TransactionClass, unknown>) => (
@@ -102,7 +102,7 @@ export const transactionsColumns: ColumnConfiguration[] = [
   },
   {
     key: 'status',
-    header: 'Status',
+    header: translate('columns.status', 'Status'),
     visible: true,
     cellRender: ({ row }: CellContext<TransactionClass, unknown>) =>
       row.original.chargingState ? (
@@ -118,7 +118,7 @@ export const transactionsColumns: ColumnConfiguration[] = [
   },
   {
     key: TransactionProps.startTime,
-    header: 'Start Time',
+    header: translate('columns.startTime', 'Start Time'),
     visible: true,
     sortable: true,
     cellRender: ({ row }: CellContext<TransactionClass, unknown>) =>
@@ -130,7 +130,7 @@ export const transactionsColumns: ColumnConfiguration[] = [
   },
   {
     key: TransactionProps.endTime,
-    header: 'End Time',
+    header: translate('columns.endTime', 'End Time'),
     visible: true,
     sortable: true,
     cellRender: ({ row }: CellContext<TransactionClass, unknown>) =>

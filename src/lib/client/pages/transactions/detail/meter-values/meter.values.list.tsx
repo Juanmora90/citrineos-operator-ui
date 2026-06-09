@@ -17,9 +17,12 @@ import { getPlainToInstanceOptions } from '@lib/utils/tables';
 import type { ExpandedState } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 
+import { useTranslate } from '@refinedev/core';
+
 export const MeterValuesList = ({ transactionEventId }: any) => {
+  const translate = useTranslate();
   const [expanded, setExpanded] = useState<ExpandedState>({});
-  const columns = useMemo(() => getMeterValueColumns(), []);
+  const columns = useMemo(() => getMeterValueColumns(translate), [translate]);
 
   return (
     <Table
